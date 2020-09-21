@@ -1,4 +1,5 @@
 package rest
+
 // The packages below are commented out at first to prevent an error if this file isn't initially saved.
 import (
 	// "bytes"
@@ -13,7 +14,7 @@ import (
 	// "github.com/giansalex/nameservice/x/nameservice/types"
 )
 
-func registerTxRoutes(cliCtx context.CLIContext, r *mux.Router) {
+func registerTxRoutes(cliCtx context.CLIContext, r *mux.Router, storeName string) {
 	// r.HandleFunc(
 	// TODO: Define the Rest route ,
 	// Call the function which should be executed for this route),
