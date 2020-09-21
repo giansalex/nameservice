@@ -13,6 +13,7 @@ const (
 )
 
 var (
+	DefaultParamspace   = types.DefaultParamspace
 	NewKeeper           = keeper.NewKeeper
 	NewQuerier          = keeper.NewQuerier
 	NewGenesisState     = types.NewGenesisState
