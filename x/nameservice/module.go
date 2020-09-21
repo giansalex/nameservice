@@ -12,9 +12,9 @@ import (
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
+	"github.com/cosmos/cosmos-sdk/x/bank"
 	"github.com/giansalex/nameservice/x/nameservice/client/cli"
 	"github.com/giansalex/nameservice/x/nameservice/client/rest"
-	"github.com/giansalex/nameservice/x/nameservice/keeper"
 	"github.com/giansalex/nameservice/x/nameservice/types"
 )
 
@@ -74,16 +74,16 @@ func (AppModuleBasic) GetQueryCmd(cdc *codec.Codec) *cobra.Command {
 type AppModule struct {
 	AppModuleBasic
 
-	keeper keeper.Keeper
-	// TODO: Add keepers that your application depends on
+	keeper     Keeper
+	bankKeeper bank.Keeper
 }
 
 // NewAppModule creates a new AppModule object
-func NewAppModule(k keeper.Keeper /*TODO: Add Keepers that your application depends on*/) AppModule {
+func NewAppModule(k Keeper, bankKeeper bank.Keeper) AppModule {
 	return AppModule{
 		AppModuleBasic: AppModuleBasic{},
 		keeper:         k,
-		// TODO: Add keepers that your application depends on
+		bankKeeper:     bankKeeper,
 	}
 }
 
