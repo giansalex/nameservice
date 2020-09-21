@@ -12,14 +12,17 @@ import (
 
 // Keeper of the nameservice store
 type Keeper struct {
+	CoinKeeper types.BankKeeper
+
 	storeKey   sdk.StoreKey
 	cdc        *codec.Codec
 	paramspace types.ParamSubspace
 }
 
 // NewKeeper creates a nameservice keeper
-func NewKeeper(cdc *codec.Codec, key sdk.StoreKey, paramspace types.ParamSubspace) Keeper {
+func NewKeeper(cdc *codec.Codec, key sdk.StoreKey, paramspace types.ParamSubspace, coinKeeper types.BankKeeper) Keeper {
 	keeper := Keeper{
+		CoinKeeper: coinKeeper,
 		storeKey:   key,
 		cdc:        cdc,
 		paramspace: paramspace.WithKeyTable(types.ParamKeyTable()),
