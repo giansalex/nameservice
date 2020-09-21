@@ -5,6 +5,7 @@ import (
 	"io"
 	"os"
 
+	"github.com/giansalex/nameservice/x/nameservice"
 	abci "github.com/tendermint/tendermint/abci/types"
 	"github.com/tendermint/tendermint/libs/log"
 	tmos "github.com/tendermint/tendermint/libs/os"
@@ -27,7 +28,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/supply"
 )
 
-const appName = "app"
+const appName = "nameservice"
 
 var (
 	// TODO: rename your cli
@@ -52,7 +53,8 @@ var (
 		params.AppModuleBasic{},
 		slashing.AppModuleBasic{},
 		supply.AppModuleBasic{},
-		// TODO: Add your module(s) AppModuleBasic
+
+		nameservice.AppModule{},
 	)
 
 	// module account permissions
@@ -99,7 +101,7 @@ type NewApp struct {
 	distrKeeper    distr.Keeper
 	supplyKeeper   supply.Keeper
 	paramsKeeper   params.Keeper
-	// TODO: Add your module(s)
+	nsKeeper       nameservice.Keeper
 
 	// Module Manager
 	mm *module.Manager
@@ -126,7 +128,7 @@ func NewInitApp(
 
 	// TODO: Add the keys that module requires
 	keys := sdk.NewKVStoreKeys(bam.MainStoreKey, auth.StoreKey, staking.StoreKey,
-		supply.StoreKey, distr.StoreKey, slashing.StoreKey, params.StoreKey)
+		supply.StoreKey, distr.StoreKey, slashing.StoreKey, params.StoreKey, nameservice.StoreKey)
 
 	tKeys := sdk.NewTransientStoreKeys(staking.TStoreKey, params.TStoreKey)
 
@@ -148,6 +150,7 @@ func NewInitApp(
 	app.subspaces[staking.ModuleName] = app.paramsKeeper.Subspace(staking.DefaultParamspace)
 	app.subspaces[distr.ModuleName] = app.paramsKeeper.Subspace(distr.DefaultParamspace)
 	app.subspaces[slashing.ModuleName] = app.paramsKeeper.Subspace(slashing.DefaultParamspace)
+	app.subspaces[nameservice.ModuleName] = app.paramsKeeper.Subspace(nameservice.DefaultParamspace)
 
 	// The AccountKeeper handles address -> account lookups
 	app.accountKeeper = auth.NewAccountKeeper(
@@ -206,7 +209,12 @@ func NewInitApp(
 			app.slashingKeeper.Hooks()),
 	)
 
-	// TODO: Add your module(s) keepers
+	app.nsKeeper = nameservice.NewKeeper(
+		app.cdc,
+		keys[nameservice.StoreKey],
+		app.subspaces[nameservice.ModuleName],
+		app.bankKeeper,
+	)
 
 	// NOTE: Any module instantiated in the module manager that is later modified
 	// must be passed by reference here.
@@ -217,10 +225,9 @@ func NewInitApp(
 		supply.NewAppModule(app.supplyKeeper, app.accountKeeper),
 		distr.NewAppModule(app.distrKeeper, app.accountKeeper, app.supplyKeeper, app.stakingKeeper),
 		slashing.NewAppModule(app.slashingKeeper, app.accountKeeper, app.stakingKeeper),
-		// TODO: Add your module(s)
+		nameservice.NewAppModule(app.nsKeeper, app.bankKeeper),
 		staking.NewAppModule(app.stakingKeeper, app.accountKeeper, app.supplyKeeper),
 		slashing.NewAppModule(app.slashingKeeper, app.accountKeeper, app.stakingKeeper),
-
 	)
 	// During begin block slashing happens after distr.BeginBlocker so that
 	// there is nothing left over in the validator fee pool, so as to keep the
@@ -238,7 +245,7 @@ func NewInitApp(
 		auth.ModuleName,
 		bank.ModuleName,
 		slashing.ModuleName,
-		// TODO: Add your module(s)
+		nameservice.ModuleName,
 		supply.ModuleName,
 		genutil.ModuleName,
 	)
