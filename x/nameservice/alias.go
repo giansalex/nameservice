@@ -13,18 +13,23 @@ const (
 )
 
 var (
-	NewKeeper        = keeper.NewKeeper
-	NewQuerier       = keeper.NewQuerier
-	NewMsgBuyName    = types.NewMsgBuyName
-	NewMsgSetName    = types.NewMsgSetName
-	NewMsgDeleteName = types.NewMsgDeleteName
-	NewWhois         = types.NewWhois
-	ModuleCdc        = types.ModuleCdc
-	RegisterCodec    = types.RegisterCodec
+	NewKeeper           = keeper.NewKeeper
+	NewQuerier          = keeper.NewQuerier
+	NewGenesisState     = types.NewGenesisState
+	DefaultGenesisState = types.DefaultGenesisState
+	ValidateGenesis     = types.ValidateGenesis
+	NewMsgBuyName       = types.NewMsgBuyName
+	NewMsgSetName       = types.NewMsgSetName
+	NewMsgDeleteName    = types.NewMsgDeleteName
+	NewWhois            = types.NewWhois
+	ModuleCdc           = types.ModuleCdc
+	RegisterCodec       = types.RegisterCodec
 )
 
 type (
-	Keeper          = keeper.Keeper
+	Keeper       = keeper.Keeper
+	GenesisState = types.GenesisState
+
 	MsgSetName      = types.MsgSetName
 	MsgBuyName      = types.MsgBuyName
 	MsgDeleteName   = types.MsgDeleteName
