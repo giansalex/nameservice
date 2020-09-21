@@ -15,12 +15,13 @@ import (
 	"github.com/giansalex/nameservice/x/nameservice/client/cli"
 	"github.com/giansalex/nameservice/x/nameservice/client/rest"
 	"github.com/giansalex/nameservice/x/nameservice/keeper"
+	"github.com/giansalex/nameservice/x/nameservice/types"
 )
 
 // Type check to ensure the interface is properly implemented
 var (
-	_ module.AppModule           = AppModule{}
-	_ module.AppModuleBasic      = AppModuleBasic{}
+	_ module.AppModule      = AppModule{}
+	_ module.AppModuleBasic = AppModuleBasic{}
 )
 
 // AppModuleBasic defines the basic application module used by the nameservice module.
@@ -54,7 +55,7 @@ func (AppModuleBasic) ValidateGenesis(bz json.RawMessage) error {
 
 // RegisterRESTRoutes registers the REST routes for the nameservice module.
 func (AppModuleBasic) RegisterRESTRoutes(ctx context.CLIContext, rtr *mux.Router) {
-	rest.RegisterRoutes(ctx, rtr)
+	rest.RegisterRoutes(ctx, rtr, StoreKey)
 }
 
 // GetTxCmd returns the root tx command for the nameservice module.
@@ -73,15 +74,15 @@ func (AppModuleBasic) GetQueryCmd(cdc *codec.Codec) *cobra.Command {
 type AppModule struct {
 	AppModuleBasic
 
-	keeper        keeper.Keeper
+	keeper keeper.Keeper
 	// TODO: Add keepers that your application depends on
 }
 
 // NewAppModule creates a new AppModule object
-func NewAppModule(k keeper.Keeper, /*TODO: Add Keepers that your application depends on*/) AppModule {
+func NewAppModule(k keeper.Keeper /*TODO: Add Keepers that your application depends on*/) AppModule {
 	return AppModule{
-		AppModuleBasic:      AppModuleBasic{},
-		keeper:              k,
+		AppModuleBasic: AppModuleBasic{},
+		keeper:         k,
 		// TODO: Add keepers that your application depends on
 	}
 }
@@ -111,7 +112,7 @@ func (AppModule) QuerierRoute() string {
 
 // NewQuerierHandler returns the nameservice module sdk.Querier.
 func (am AppModule) NewQuerierHandler() sdk.Querier {
-	return types.NewQuerier(am.keeper)
+	return NewQuerier(am.keeper)
 }
 
 // InitGenesis performs genesis initialization for the nameservice module. It returns
