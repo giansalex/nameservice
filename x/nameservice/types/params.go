@@ -5,9 +5,6 @@ import (
 	"fmt"
 	"strings"
 
-	yaml "gopkg.in/yaml.v2"
-
-	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params"
 )
@@ -44,12 +41,6 @@ func NewParams(minPrice uint64, bondDenom string) Params {
 	}
 }
 
-// String implements the stringer interface for Params
-func (p Params) String() string {
-	out, _ := yaml.Marshal(p)
-	return string(out)
-}
-
 // ParamSetPairs - Implements params.ParamSet
 func (p *Params) ParamSetPairs() paramtypes.ParamSetPairs {
 	return paramtypes.ParamSetPairs{
@@ -67,27 +58,7 @@ func DefaultParams() Params {
 	)
 }
 
-// unmarshal the current staking params value from store key or panic
-func MustUnmarshalParams(cdc *codec.Codec, value []byte) Params {
-	params, err := UnmarshalParams(cdc, value)
-	if err != nil {
-		panic(err)
-	}
-
-	return params
-}
-
-// unmarshal the current staking params value from store key
-func UnmarshalParams(cdc *codec.Codec, value []byte) (params Params, err error) {
-	err = cdc.UnmarshalBinaryBare(value, &params)
-	if err != nil {
-		return
-	}
-
-	return
-}
-
-// validate a set of params
+// Validate a set of params
 func (p Params) Validate() error {
 	if err := validateMinPrice(p.MinPrice); err != nil {
 		return err

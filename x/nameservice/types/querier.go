@@ -19,13 +19,3 @@ type QueryResNames []string
 func (n QueryResNames) String() string {
 	return strings.Join(n[:], "\n")
 }
-
-// QueryResParams Queries Result Payload for parameters query
-type QueryResParams struct {
-	Params Params `json:"params"`
-}
-
-// implement fmt.Stringer
-func (r QueryResParams) String() string {
-	return r.Params.String()
-}
