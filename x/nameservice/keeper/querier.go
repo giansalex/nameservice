@@ -11,9 +11,10 @@ import (
 
 // query endpoints supported by the nameservice Querier
 const (
-	QueryResolve = "resolve"
-	QueryWhois   = "whois"
-	QueryNames   = "names"
+	QueryResolve    = "resolve"
+	QueryWhois      = "whois"
+	QueryNames      = "names"
+	QueryParameters = "parameters"
 )
 
 // NewQuerier is the module level router for state queries
@@ -26,10 +27,23 @@ func NewQuerier(keeper Keeper) sdk.Querier {
 			return queryWhois(ctx, path[1:], req, keeper)
 		case QueryNames:
 			return queryNames(ctx, req, keeper)
+		case QueryParameters:
+			return queryParameters(ctx, keeper)
 		default:
 			return nil, sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, "unknown nameservice query endpoint")
 		}
 	}
+}
+
+func queryParameters(ctx sdk.Context, keeper Keeper) ([]byte, error) {
+	params := keeper.GetParams(ctx)
+
+	res, err := codec.MarshalJSONIndent(keeper.cdc, params)
+	if err != nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrJSONMarshal, err.Error())
+	}
+
+	return res, nil
 }
 
 // nolint: unparam
