@@ -4,19 +4,22 @@ import "fmt"
 
 // GenesisState - all nameservice state that must be provided at genesis
 type GenesisState struct {
+	Params       Params  `json:"params"`
 	WhoisRecords []Whois `json:"whois_records"`
 }
 
 // NewGenesisState creates a new GenesisState object
-func NewGenesisState( /* TODO: Fill out with what is needed for genesis state */ ) GenesisState {
+func NewGenesisState(params Params, whoisRecords []Whois) GenesisState {
 	return GenesisState{
-		WhoisRecords: nil,
+		Params:       params,
+		WhoisRecords: whoisRecords,
 	}
 }
 
 // DefaultGenesisState - default GenesisState used by Cosmos Hub
 func DefaultGenesisState() GenesisState {
 	return GenesisState{
+		Params:       DefaultParams(),
 		WhoisRecords: []Whois{},
 	}
 }
@@ -34,5 +37,5 @@ func ValidateGenesis(data GenesisState) error {
 			return fmt.Errorf("invalid WhoisRecord: Value: %s. Error: Missing Price", record.Value)
 		}
 	}
-	return nil
+	return data.Params.Validate()
 }
