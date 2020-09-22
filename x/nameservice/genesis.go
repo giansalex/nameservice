@@ -7,6 +7,7 @@ import (
 // InitGenesis initialize default parameters
 // and the keeper's address to pubkey map
 func InitGenesis(ctx sdk.Context, keeper Keeper, data GenesisState) {
+	keeper.SetParams(ctx, data.Params)
 	for _, record := range data.WhoisRecords {
 		keeper.SetWhois(ctx, record.Value, record)
 	}
@@ -25,5 +26,8 @@ func ExportGenesis(ctx sdk.Context, k Keeper) GenesisState {
 		records = append(records, whois)
 
 	}
-	return GenesisState{WhoisRecords: records}
+	return GenesisState{
+		Params:       k.GetParams(ctx),
+		WhoisRecords: records,
+	}
 }
