@@ -8,7 +8,7 @@ import (
 )
 
 // MinNamePrice is Initial Starting Price for a name that was never previously owned
-var MinNamePrice = sdk.Coins{sdk.NewInt64Coin("ntn", 1)}
+var MinNamePrice = sdk.Coins{sdk.NewInt64Coin("uname", 100000)}
 
 // Whois is a struct that contains all the metadata of a name
 type Whois struct {
