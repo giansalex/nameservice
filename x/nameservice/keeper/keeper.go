@@ -39,7 +39,10 @@ func (k Keeper) Logger(ctx sdk.Context) log.Logger {
 func (k Keeper) GetWhois(ctx sdk.Context, name string) types.Whois {
 	store := ctx.KVStore(k.storeKey)
 	if !k.IsNamePresent(ctx, name) {
-		return types.NewWhois()
+		whois := types.NewWhois()
+		whois.Price = sdk.NewCoins(sdk.NewCoin(k.BondDenom(ctx), sdk.NewIntFromUint64(k.MinPrice(ctx))))
+
+		return whois
 	}
 	bz := store.Get([]byte(name))
 	var whois types.Whois
