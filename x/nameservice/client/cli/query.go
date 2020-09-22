@@ -25,6 +25,7 @@ func GetQueryCmd(storeKey string, cdc *codec.Codec) *cobra.Command {
 		GetCmdResolveName(storeKey, cdc),
 		GetCmdWhois(storeKey, cdc),
 		GetCmdNames(storeKey, cdc),
+		GetCmdParams(storeKey, cdc),
 	)...)
 
 	return nameserviceQueryCmd
@@ -92,6 +93,28 @@ func GetCmdNames(queryRoute string, cdc *codec.Codec) *cobra.Command {
 			}
 
 			var out types.QueryResNames
+			cdc.MustUnmarshalJSON(res, &out)
+			return cliCtx.PrintOutput(out)
+		},
+	}
+}
+
+// GetCmdParams implements the params query command.
+func GetCmdParams(queryRoute string, cdc *codec.Codec) *cobra.Command {
+	return &cobra.Command{
+		Use: "params",
+		// Args:  cobra.NoArgs,
+		Short: "Query the current nameservice parameters information",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			cliCtx := context.NewCLIContext().WithCodec(cdc)
+
+			res, _, err := cliCtx.QueryWithData(fmt.Sprintf("custom/%s/parameters", queryRoute), nil)
+			if err != nil {
+				fmt.Printf("could not get parameters\n")
+				return nil
+			}
+
+			var out types.QueryResParams
 			cdc.MustUnmarshalJSON(res, &out)
 			return cliCtx.PrintOutput(out)
 		},
