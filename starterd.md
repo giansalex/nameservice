@@ -26,6 +26,15 @@ nsd add-genesis-account $(nscli keys show alice -a) 1000000000uname
 Chane `stake` default token to `uname` native token at `$HOME/.nsd/config/genesis.json`.     
 Also you can change `vote_period` (nanoseconds) in **gov** `genesis.json`
 
+**Params**
+
+> You can change in `genesis.json` or gov proposal.
+
+|Key       | Value  |
+|----------|--------| 
+|MinPrice  | 100000 |
+|BondDenom | `uname`|
+
 Follow:
 
 ```bash
