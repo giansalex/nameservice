@@ -8,40 +8,13 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/client/context"
 	"github.com/cosmos/cosmos-sdk/types/rest"
-	"github.com/giansalex/nameservice/x/nameservice/types"
 )
 
 func registerQueryRoutes(cliCtx context.CLIContext, r *mux.Router, storeName string) {
-	// TODO: Define your GET REST endpoints
-	r.HandleFunc(
-		"/nameservice/parameters",
-		queryParamsHandlerFn(cliCtx),
-	).Methods("GET")
-
 	r.HandleFunc(fmt.Sprintf("/%s/names", storeName), namesHandler(cliCtx, storeName)).Methods("GET")
 	r.HandleFunc(fmt.Sprintf("/%s/names/{%s}", storeName, restName), resolveNameHandler(cliCtx, storeName)).Methods("GET")
 	r.HandleFunc(fmt.Sprintf("/%s/names/{%s}/whois", storeName, restName), whoIsHandler(cliCtx, storeName)).Methods("GET")
-
-}
-
-func queryParamsHandlerFn(cliCtx context.CLIContext) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		cliCtx, ok := rest.ParseQueryHeightOrReturnBadRequest(w, cliCtx, r)
-		if !ok {
-			return
-		}
-
-		route := fmt.Sprintf("custom/%s/parameters", types.QuerierRoute)
-
-		res, height, err := cliCtx.QueryWithData(route, nil)
-		if err != nil {
-			rest.WriteErrorResponse(w, http.StatusInternalServerError, err.Error())
-			return
-		}
-
-		cliCtx = cliCtx.WithHeight(height)
-		rest.PostProcessResponse(w, cliCtx, res)
-	}
+	r.HandleFunc(fmt.Sprintf("/%s/parameters", storeName), paramsHandler(cliCtx, storeName)).Methods("GET")
 }
 
 func resolveNameHandler(cliCtx context.CLIContext, storeName string) http.HandlerFunc {
@@ -81,6 +54,26 @@ func namesHandler(cliCtx context.CLIContext, storeName string) http.HandlerFunc 
 			rest.WriteErrorResponse(w, http.StatusNotFound, err.Error())
 			return
 		}
+		rest.PostProcessResponse(w, cliCtx, res)
+	}
+}
+
+func paramsHandler(cliCtx context.CLIContext, storeName string) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		cliCtx, ok := rest.ParseQueryHeightOrReturnBadRequest(w, cliCtx, r)
+		if !ok {
+			return
+		}
+
+		route := fmt.Sprintf("custom/%s/parameters", storeName)
+
+		res, height, err := cliCtx.QueryWithData(route, nil)
+		if err != nil {
+			rest.WriteErrorResponse(w, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		cliCtx = cliCtx.WithHeight(height)
 		rest.PostProcessResponse(w, cliCtx, res)
 	}
 }
