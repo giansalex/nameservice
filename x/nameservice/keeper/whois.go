@@ -1,10 +1,11 @@
 package keeper
 
 import (
+	"strconv"
+
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/giansalex/nameservice/x/nameservice/types"
-	"strconv"
 )
 
 // GetWhoisCount get the total number of whois
@@ -55,8 +56,8 @@ func (k Keeper) AppendWhois(
 
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.WhoisKey))
 	key := types.KeyPrefix(types.WhoisKey + whois.Id)
-	value := k.cdc.MustMarshalBinaryBare(&whois)
-	store.Set(key, value)
+	data := k.cdc.MustMarshalBinaryBare(&whois)
+	store.Set(key, data)
 
 	// Update whois count
 	k.SetWhoisCount(ctx, count+1)
