@@ -25,9 +25,5 @@ func GetTxCmd() *cobra.Command {
 	cmd.AddCommand(CmdDeleteName())
 	// this line is used by starport scaffolding # 1
 
-	cmd.AddCommand(CmdCreateWhois())
-	cmd.AddCommand(CmdUpdateWhois())
-	cmd.AddCommand(CmdDeleteWhois())
-
 	return cmd
 }

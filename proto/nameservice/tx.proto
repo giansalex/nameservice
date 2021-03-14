@@ -11,9 +11,6 @@ service Msg {
   rpc BuyName(MsgBuyName) returns (MsgBuyNameResponse);
   rpc DeleteName(MsgDeleteName) returns (MsgDeleteNameResponse);
     // this line is used by starport scaffolding # proto/tx/rpc
-  rpc CreateWhois(MsgCreateWhois) returns (MsgCreateWhoisResponse);
-  rpc UpdateWhois(MsgUpdateWhois) returns (MsgUpdateWhoisResponse);
-  rpc DeleteWhois(MsgDeleteWhois) returns (MsgDeleteWhoisResponse);
 }
 
 message MsgSetName {
@@ -40,29 +37,3 @@ message MsgDeleteName {
 message MsgDeleteNameResponse { }
 
 // this line is used by starport scaffolding # proto/tx/message
-
-message MsgCreateWhois {
-  string creator = 1;
-  string value = 2;
-  string price = 3;
-}
-
-message MsgCreateWhoisResponse {
-  string id = 1;
-}
-
-message MsgUpdateWhois {
-  string creator = 1;
-  string id = 2;
-  string value = 3;
-  string price = 4;
-}
-
-message MsgUpdateWhoisResponse { }
-
-message MsgDeleteWhois {
-  string creator = 1;
-  string id = 2;
-}
-
-message MsgDeleteWhoisResponse { }

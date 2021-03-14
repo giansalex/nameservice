@@ -33,8 +33,5 @@ func registerTxHandlers(clientCtx client.Context, r *mux.Router) {
 	r.HandleFunc("/nameservice/whois/{id}", deleteNameHandler(clientCtx)).Methods("POST")
 
 	// this line is used by starport scaffolding # 4
-	r.HandleFunc("/nameservice/whois", createWhoisHandler(clientCtx)).Methods("POST")
-	r.HandleFunc("/nameservice/whois/{id}", updateWhoisHandler(clientCtx)).Methods("POST")
-	r.HandleFunc("/nameservice/whois/{id}", deleteWhoisHandler(clientCtx)).Methods("POST")
 
 }

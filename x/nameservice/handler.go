@@ -27,17 +27,6 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 			res, err := msgServer.DeleteName(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
 		// this line is used by starport scaffolding # 1
-		case *types.MsgCreateWhois:
-			res, err := msgServer.CreateWhois(sdk.WrapSDKContext(ctx), msg)
-			return sdk.WrapServiceResult(ctx, res, err)
-
-		case *types.MsgUpdateWhois:
-			res, err := msgServer.UpdateWhois(sdk.WrapSDKContext(ctx), msg)
-			return sdk.WrapServiceResult(ctx, res, err)
-
-		case *types.MsgDeleteWhois:
-			res, err := msgServer.DeleteWhois(sdk.WrapSDKContext(ctx), msg)
-			return sdk.WrapServiceResult(ctx, res, err)
 
 		default:
 			errMsg := fmt.Sprintf("unrecognized %s message type: %T", types.ModuleName, msg)
