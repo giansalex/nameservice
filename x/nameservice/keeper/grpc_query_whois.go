@@ -16,11 +16,8 @@ func (k Keeper) Name(c context.Context, req *types.QueryGetNameRequest) (*types.
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
-	var whois types.Whois
 	ctx := sdk.UnwrapSDKContext(c)
-
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.WhoisKey))
-	k.cdc.MustUnmarshalBinaryBare(store.Get(types.KeyPrefix(types.WhoisKey+req.Id)), &whois)
+	whois := k.GetWhois(ctx, req.Id)
 
 	return &types.QueryGetNameResponse{Value: whois.Value}, nil
 }
@@ -58,11 +55,19 @@ func (k Keeper) Whois(c context.Context, req *types.QueryGetWhoisRequest) (*type
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
-	var whois types.Whois
 	ctx := sdk.UnwrapSDKContext(c)
-
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.WhoisKey))
-	k.cdc.MustUnmarshalBinaryBare(store.Get(types.KeyPrefix(types.WhoisKey+req.Id)), &whois)
+	whois := k.GetWhois(ctx, req.Id)
 
 	return &types.QueryGetWhoisResponse{Whois: &whois}, nil
+}
+
+func (k Keeper) Params(c context.Context, req *types.QueryParamsRequest) (*types.QueryParamsResponse, error) {
+	if req == nil {
+		return nil, status.Error(codes.InvalidArgument, "invalid request")
+	}
+
+	ctx := sdk.UnwrapSDKContext(c)
+	params := k.GetParams(ctx)
+
+	return &types.QueryParamsResponse{Params: params}, nil
 }

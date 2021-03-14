@@ -38,3 +38,14 @@ func getWhois(ctx sdk.Context, id string, keeper Keeper, legacyQuerierCdc *codec
 
 	return bz, nil
 }
+
+func getParams(ctx sdk.Context, keeper Keeper, legacyQuerierCdc *codec.LegacyAmino) ([]byte, error) {
+	params := keeper.GetParams(ctx)
+
+	bz, err := codec.MarshalJSONIndent(legacyQuerierCdc, params)
+	if err != nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrJSONMarshal, err.Error())
+	}
+
+	return bz, nil
+}

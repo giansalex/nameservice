@@ -2,6 +2,7 @@ syntax = "proto3";
 package giansalex.nameservice.nameservice;
 
 import "google/api/annotations.proto";
+import "gogoproto/gogo.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 // this line is used by starport scaffolding # 1
 import "nameservice/whois.proto";
@@ -21,6 +22,16 @@ service Query {
 		option (google.api.http).get = "/giansalex/nameservice/nameservice/whois";
 	}
 
+	rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
+		option (google.api.http).get = "/giansalex/nameservice/params";
+	}
+}
+
+message QueryParamsRequest {}
+
+message QueryParamsResponse {
+  // params holds all the parameters of this module.
+  Params params = 1 [(gogoproto.nullable) = false];
 }
 
 message QueryGetNameRequest {
