@@ -325,7 +325,7 @@ func New(
 	app.EvidenceKeeper = *evidenceKeeper
 
 	app.nameserviceKeeper = *nameservicekeeper.NewKeeper(
-		appCodec, keys[nameservicetypes.StoreKey], keys[nameservicetypes.MemStoreKey], app.BankKeeper, app.GetSubspace(nameservice.ModuleName),
+		appCodec, keys[nameservicetypes.StoreKey], keys[nameservicetypes.MemStoreKey], app.BankKeeper, app.GetSubspace(nameservicetypes.ModuleName),
 	)
 
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
@@ -598,7 +598,7 @@ func initParamsKeeper(appCodec codec.BinaryMarshaler, legacyAmino *codec.LegacyA
 	paramsKeeper.Subspace(crisistypes.ModuleName)
 	paramsKeeper.Subspace(ibctransfertypes.ModuleName)
 	paramsKeeper.Subspace(ibchost.ModuleName)
-	paramsKeeper.Subspace(nameservice.ModuleName)
+	paramsKeeper.Subspace(nameservicetypes.ModuleName)
 	// this line is used by starport scaffolding # stargate/app/paramSubspace
 
 	return paramsKeeper
