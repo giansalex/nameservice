@@ -9,6 +9,34 @@ import (
 	"github.com/spf13/cobra"
 )
 
+func CmdResolveName() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "resolve [name]",
+		Short: "resolve name",
+		Args:  cobra.ExactArgs(1),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			clientCtx := client.GetClientContextFromCmd(cmd)
+
+			queryClient := types.NewQueryClient(clientCtx)
+
+			params := &types.QueryGetNameRequest{
+				Id: args[0],
+			}
+
+			res, err := queryClient.Name(context.Background(), params)
+			if err != nil {
+				return err
+			}
+
+			return clientCtx.PrintProto(res)
+		},
+	}
+
+	flags.AddQueryFlagsToCmd(cmd)
+
+	return cmd
+}
+
 func CmdListWhois() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "list-whois",
@@ -43,8 +71,8 @@ func CmdListWhois() *cobra.Command {
 
 func CmdShowWhois() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "show-whois [id]",
-		Short: "shows a whois",
+		Use:   "get-whois [id]",
+		Short: "Query a whois by id",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx := client.GetClientContextFromCmd(cmd)
