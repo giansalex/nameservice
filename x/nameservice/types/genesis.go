@@ -40,5 +40,5 @@ func (gs GenesisState) Validate() error {
 		whoisIdMap[elem.Id] = true
 	}
 
-	return nil
+	return gs.Params.Validate()
 }
