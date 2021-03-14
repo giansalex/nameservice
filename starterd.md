@@ -23,8 +23,8 @@ nsd add-genesis-account $(nscli keys show jack -a) 1000000000uname
 nsd add-genesis-account $(nscli keys show alice -a) 1000000000uname
 ```
 
-Chane `stake` default token to `uname` native token at `$HOME/.nsd/config/genesis.json`.     
-Also you can change `vote_period` (nanoseconds) in **gov** `genesis.json`
+Change `stake` default token to `uname` native token at `$HOME/.nsd/config/genesis.json`.     
+Also you can change `voting_period` (nanoseconds) in **gov** `genesis.json`
 
 **Params**
 
