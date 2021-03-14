@@ -1,6 +1,7 @@
 package types
 
 const (
-	QueryGetWhois  = "get-whois"
-	QueryListWhois = "list-whois"
+	QueryResolveName = "resolve-name"
+	QueryGetWhois    = "get-whois"
+	QueryListWhois   = "list-whois"
 )

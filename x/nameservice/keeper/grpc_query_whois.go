@@ -11,6 +11,20 @@ import (
 	"google.golang.org/grpc/status"
 )
 
+func (k Keeper) Name(c context.Context, req *types.QueryGetNameRequest) (*types.QueryGetNameResponse, error) {
+	if req == nil {
+		return nil, status.Error(codes.InvalidArgument, "invalid request")
+	}
+
+	var whois types.Whois
+	ctx := sdk.UnwrapSDKContext(c)
+
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.WhoisKey))
+	k.cdc.MustUnmarshalBinaryBare(store.Get(types.KeyPrefix(types.WhoisKey+req.Id)), &whois)
+
+	return &types.QueryGetNameResponse{Value: whois.Value}, nil
+}
+
 func (k Keeper) WhoisAll(c context.Context, req *types.QueryAllWhoisRequest) (*types.QueryAllWhoisResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")

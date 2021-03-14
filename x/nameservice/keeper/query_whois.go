@@ -6,6 +6,17 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
+func resolveName(ctx sdk.Context, id string, keeper Keeper, legacyQuerierCdc *codec.LegacyAmino) ([]byte, error) {
+	msg := keeper.GetWhois(ctx, id)
+
+	bz, err := codec.MarshalJSONIndent(legacyQuerierCdc, msg.Value)
+	if err != nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrJSONMarshal, err.Error())
+	}
+
+	return bz, nil
+}
+
 func listWhois(ctx sdk.Context, keeper Keeper, legacyQuerierCdc *codec.LegacyAmino) ([]byte, error) {
 	msgs := keeper.GetAllWhois(ctx)
 
