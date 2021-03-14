@@ -26,6 +26,17 @@ func (gs GenesisState) Validate() error {
 		if _, ok := whoisIdMap[elem.Id]; ok {
 			return fmt.Errorf("duplicated id for whois")
 		}
+
+		if elem.Creator == "" {
+			return fmt.Errorf("invalid WhoisRecord: Creator: %s. Error: Missing Creator", elem.Creator)
+		}
+		if elem.Value == "" {
+			return fmt.Errorf("invalid WhoisRecord: Value: %s. Error: Missing Value", elem.Value)
+		}
+		if elem.Price == "" {
+			return fmt.Errorf("invalid WhoisRecord: Price: %s. Error: Missing Price", elem.Price)
+		}
+
 		whoisIdMap[elem.Id] = true
 	}
 
