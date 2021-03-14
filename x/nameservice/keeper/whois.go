@@ -8,6 +8,13 @@ import (
 	"github.com/giansalex/nameservice/x/nameservice/types"
 )
 
+// SetNameValue set name for specific whois
+func (k Keeper) SetNameValue(ctx sdk.Context, name, value string) {
+	whois := k.GetWhois(ctx, name)
+	whois.Value = value
+	k.SetWhois(ctx, whois)
+}
+
 // GetWhoisCount get the total number of whois
 func (k Keeper) GetWhoisCount(ctx sdk.Context) int64 {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.WhoisCountKey))
