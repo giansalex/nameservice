@@ -87,7 +87,7 @@ func validateMinPrice(i interface{}) error {
 	}
 
 	if !v.IsAllPositive() {
-		return fmt.Errorf("min price must be positive: %d", v)
+		return fmt.Errorf("min price must be positive: %T", v)
 	}
 
 	return nil
