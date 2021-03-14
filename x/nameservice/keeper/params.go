@@ -5,7 +5,7 @@ import (
 	"github.com/giansalex/nameservice/x/nameservice/types"
 )
 
-// UnbondingTime
+// MinPrice
 func (k Keeper) MinPrice(ctx sdk.Context) (res sdk.Coins) {
 	k.paramstore.Get(ctx, types.KeyMinPrice, &res)
 	return

@@ -11,6 +11,11 @@ faucet:
   coins: ["5000000uname"]
 genesis:
   app_state:
+    nameservice:
+      params:
+        min_price:
+          - amount: "10"
+            denom: "uname"
     crisis:
       constant_fee:
         denom: "uname"
