@@ -20,6 +20,7 @@ func RegisterRoutes(clientCtx client.Context, r *mux.Router) {
 }
 
 func registerQueryRoutes(clientCtx client.Context, r *mux.Router) {
+	r.HandleFunc("/nameservice/whois/{id}/resolve", resolveNameHandler(clientCtx)).Methods("GET")
 	// this line is used by starport scaffolding # 3
 	r.HandleFunc("/nameservice/whois/{id}", getWhoisHandler(clientCtx)).Methods("GET")
 	r.HandleFunc("/nameservice/whois", listWhoisHandler(clientCtx)).Methods("GET")
@@ -27,6 +28,10 @@ func registerQueryRoutes(clientCtx client.Context, r *mux.Router) {
 }
 
 func registerTxHandlers(clientCtx client.Context, r *mux.Router) {
+	r.HandleFunc("/nameservice/whois", setNameHandler(clientCtx)).Methods("PUT")
+	r.HandleFunc("/nameservice/whois", buyNameHandler(clientCtx)).Methods("POST")
+	r.HandleFunc("/nameservice/whois/{id}", deleteNameHandler(clientCtx)).Methods("POST")
+
 	// this line is used by starport scaffolding # 4
 	r.HandleFunc("/nameservice/whois", createWhoisHandler(clientCtx)).Methods("POST")
 	r.HandleFunc("/nameservice/whois/{id}", updateWhoisHandler(clientCtx)).Methods("POST")
