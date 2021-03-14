@@ -1,11 +1,11 @@
 accounts:
   - name: alice
-    coins: ["1000token", "100000000stake"]
-  - name: bob
-    coins: ["500token"]
+    coins: ["1000000000uname"]
+  - name: jack
+    coins: ["1000000000uname"]
 validator:
-  name: alice
-  staked: "100000000stake"
+  name: jack
+  staked: "10000000uname"
 faucet:
-  name: bob 
-  coins: ["5token"]
+  name: alice 
+  coins: ["5000000uname"]
