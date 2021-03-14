@@ -57,7 +57,6 @@ func (k msgServer) BuyName(goCtx context.Context, msg *types.MsgBuyName) (*types
 		whois.Creator = msg.Buyer
 		whois.Price = msg.Bid
 
-		k.SetWhois(ctx, whois)
 	} else {
 		bidPrice, _ := sdk.ParseCoinsNormalized(msg.Bid)
 		buyer, err := sdk.AccAddressFromBech32(msg.Buyer)
