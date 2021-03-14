@@ -14,10 +14,6 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 	for _, elem := range genState.WhoisList {
 		k.SetWhois(ctx, *elem)
 	}
-
-	// Set whois count
-	k.SetWhoisCount(ctx, int64(len(genState.WhoisList)))
-
 }
 
 // ExportGenesis returns the capability module's exported genesis.

@@ -6,8 +6,8 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-func resolveName(ctx sdk.Context, id string, keeper Keeper, legacyQuerierCdc *codec.LegacyAmino) ([]byte, error) {
-	msg := keeper.GetWhois(ctx, id)
+func resolveName(ctx sdk.Context, name string, keeper Keeper, legacyQuerierCdc *codec.LegacyAmino) ([]byte, error) {
+	msg := keeper.GetWhois(ctx, name)
 
 	bz, err := codec.MarshalJSONIndent(legacyQuerierCdc, msg.Value)
 	if err != nil {

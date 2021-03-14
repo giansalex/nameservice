@@ -1,8 +1,6 @@
 package keeper
 
 import (
-	"strconv"
-
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/giansalex/nameservice/x/nameservice/types"
@@ -13,63 +11,6 @@ func (k Keeper) SetNameValue(ctx sdk.Context, name, value string) {
 	whois := k.GetWhois(ctx, name)
 	whois.Value = value
 	k.SetWhois(ctx, whois)
-}
-
-// GetWhoisCount get the total number of whois
-func (k Keeper) GetWhoisCount(ctx sdk.Context) int64 {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.WhoisCountKey))
-	byteKey := types.KeyPrefix(types.WhoisCountKey)
-	bz := store.Get(byteKey)
-
-	// Count doesn't exist: no element
-	if bz == nil {
-		return 0
-	}
-
-	// Parse bytes
-	count, err := strconv.ParseInt(string(bz), 10, 64)
-	if err != nil {
-		// Panic because the count should be always formattable to int64
-		panic("cannot decode count")
-	}
-
-	return count
-}
-
-// SetWhoisCount set the total number of whois
-func (k Keeper) SetWhoisCount(ctx sdk.Context, count int64) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.WhoisCountKey))
-	byteKey := types.KeyPrefix(types.WhoisCountKey)
-	bz := []byte(strconv.FormatInt(count, 10))
-	store.Set(byteKey, bz)
-}
-
-// AppendWhois appends a whois in the store with a new id and update the count
-func (k Keeper) AppendWhois(
-	ctx sdk.Context,
-	creator string,
-	value string,
-	price string,
-) string {
-	// Create the whois
-	count := k.GetWhoisCount(ctx)
-	id := strconv.FormatInt(count, 10)
-	var whois = types.Whois{
-		Creator: creator,
-		Id:      id,
-		Value:   value,
-		Price:   price,
-	}
-
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.WhoisKey))
-	key := types.KeyPrefix(types.WhoisKey + whois.Id)
-	data := k.cdc.MustMarshalBinaryBare(&whois)
-	store.Set(key, data)
-
-	// Update whois count
-	k.SetWhoisCount(ctx, count+1)
-
-	return id
 }
 
 // SetWhois set a specific whois in the store
