@@ -24,7 +24,7 @@ func registerQueryRoutes(clientCtx client.Context, r *mux.Router) {
 	// this line is used by starport scaffolding # 3
 	r.HandleFunc("/nameservice/whois/{id}", getWhoisHandler(clientCtx)).Methods("GET")
 	r.HandleFunc("/nameservice/whois", listWhoisHandler(clientCtx)).Methods("GET")
-
+	r.HandleFunc("/nameservice/params", getParamsHandler(clientCtx)).Methods("GET")
 }
 
 func registerTxHandlers(clientCtx client.Context, r *mux.Router) {
