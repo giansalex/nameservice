@@ -64,6 +64,10 @@ func (k msgServer) BuyName(goCtx context.Context, msg *types.MsgBuyName) (*types
 			return nil, err
 		}
 
+		if k.MinPrice(ctx).IsAllGT(bidPrice) {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrInsufficientFunds, "Bid not high enough")
+		}
+
 		err = k.bankKeeper.SubtractCoins(ctx, buyer, bidPrice)
 		if err != nil {
 			return nil, err
