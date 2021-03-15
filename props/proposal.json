@@ -5,7 +5,7 @@
       {
         "subspace": "nameservice",
         "key": "MinPrice",
-        "value": "200000"
+        "value": [{"denom":"uname","amount":"20"}]
       }
     ],
     "deposit": [

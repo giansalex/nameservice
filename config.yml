@@ -24,6 +24,8 @@ genesis:
         min_deposit:
           - amount: "10000000"
             denom: "uname"
+      voting_params:
+        voting_period: "1800s"
     mint:
       params:
         mint_denom: "uname"
