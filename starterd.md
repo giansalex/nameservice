@@ -28,7 +28,7 @@ nsd add-genesis-account $(nsd keys show alice -a) 1000000000uname
 Follow:
 
 ```bash
-nsd gentx --name jack --amount=10000000uname
+nsd gentx jack 10000000uname --chain-id namechain
 nsd collect-gentxs
 ```
 
