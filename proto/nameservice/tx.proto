@@ -1,0 +1,39 @@
+syntax = "proto3";
+package giansalex.nameservice.nameservice;
+
+// this line is used by starport scaffolding # proto/tx/import
+
+option go_package = "github.com/giansalex/nameservice/x/nameservice/types";
+
+// Msg defines the Msg service.
+service Msg {
+  rpc SetName(MsgSetName) returns (MsgSetNameResponse);
+  rpc BuyName(MsgBuyName) returns (MsgBuyNameResponse);
+  rpc DeleteName(MsgDeleteName) returns (MsgDeleteNameResponse);
+    // this line is used by starport scaffolding # proto/tx/rpc
+}
+
+message MsgSetName {
+  string name = 1;
+  string value = 2;
+  string owner = 3;
+}
+
+message MsgSetNameResponse { }
+
+message MsgBuyName {
+  string name = 1;
+  string bid = 2;
+  string buyer = 3;
+}
+
+message MsgBuyNameResponse { }
+
+message MsgDeleteName {
+  string id = 1;
+  string creator = 2; 
+}
+
+message MsgDeleteNameResponse { }
+
+// this line is used by starport scaffolding # proto/tx/message

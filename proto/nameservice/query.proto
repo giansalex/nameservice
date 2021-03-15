@@ -1,0 +1,61 @@
+syntax = "proto3";
+package giansalex.nameservice.nameservice;
+
+import "google/api/annotations.proto";
+import "gogoproto/gogo.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+// this line is used by starport scaffolding # 1
+import "nameservice/whois.proto";
+
+option go_package = "github.com/giansalex/nameservice/x/nameservice/types";
+
+// Query defines the gRPC querier service.
+service Query {
+	rpc Name(QueryGetNameRequest) returns (QueryGetNameResponse) {
+		option (google.api.http).get = "/giansalex/nameservice/nameservice/whois/{id}/resolve";
+	}
+    // this line is used by starport scaffolding # 2
+	rpc Whois(QueryGetWhoisRequest) returns (QueryGetWhoisResponse) {
+		option (google.api.http).get = "/giansalex/nameservice/nameservice/whois/{id}";
+	}
+	rpc WhoisAll(QueryAllWhoisRequest) returns (QueryAllWhoisResponse) {
+		option (google.api.http).get = "/giansalex/nameservice/nameservice/whois";
+	}
+
+	rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
+		option (google.api.http).get = "/giansalex/nameservice/params";
+	}
+}
+
+message QueryParamsRequest {}
+
+message QueryParamsResponse {
+  // params holds all the parameters of this module.
+  Params params = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryGetNameRequest {
+	string id = 1;
+}
+
+message QueryGetNameResponse {
+	string value = 1;
+}
+
+// this line is used by starport scaffolding # 3
+message QueryGetWhoisRequest {
+	string id = 1;
+}
+
+message QueryGetWhoisResponse {
+	Whois Whois = 1;
+}
+
+message QueryAllWhoisRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllWhoisResponse {
+	repeated Whois Whois = 1;
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}

@@ -1,18 +1,18 @@
 {
-    "title": "Param Change",
+    "title": "Nameservice Param Change",
     "description": "Update min price",
     "changes": [
       {
         "subspace": "nameservice",
         "key": "MinPrice",
-        "value": "200000"
+        "value": [
+          {
+            "denom": "uname",
+            "amount": "20"
+          }
+        ]
       }
     ],
-    "deposit": [
-      {
-        "denom": "uname",
-        "amount": "10000000"
-      }
-    ]
+    "deposit": "10000000uname"
   }
   

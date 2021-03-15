@@ -1,41 +1,45 @@
 package types
 
-import "fmt"
+import (
+	"fmt"
+)
 
-// GenesisState - all nameservice state that must be provided at genesis
-type GenesisState struct {
-	Params       Params  `json:"params"`
-	WhoisRecords []Whois `json:"whois_records"`
-}
+// DefaultIndex is the default capability global index
+const DefaultIndex uint64 = 1
 
-// NewGenesisState creates a new GenesisState object
-func NewGenesisState(params Params, whoisRecords []Whois) GenesisState {
-	return GenesisState{
-		Params:       params,
-		WhoisRecords: whoisRecords,
+// DefaultGenesis returns the default Capability genesis state
+func DefaultGenesis() *GenesisState {
+	return &GenesisState{
+		Params: DefaultParams(),
+		// this line is used by starport scaffolding # genesis/types/default
+		WhoisList: []*Whois{},
 	}
 }
 
-// DefaultGenesisState - default GenesisState used by Cosmos Hub
-func DefaultGenesisState() GenesisState {
-	return GenesisState{
-		Params:       DefaultParams(),
-		WhoisRecords: []Whois{},
-	}
-}
+// Validate performs basic genesis state validation returning an error upon any
+// failure.
+func (gs GenesisState) Validate() error {
+	// this line is used by starport scaffolding # genesis/types/validate
+	// Check for duplicated ID in whois
+	whoisIdMap := make(map[string]bool)
 
-// ValidateGenesis validates the nameservice genesis parameters
-func ValidateGenesis(data GenesisState) error {
-	for _, record := range data.WhoisRecords {
-		if record.Owner == nil {
-			return fmt.Errorf("invalid WhoisRecord: Value: %s. Error: Missing Owner", record.Value)
+	for _, elem := range gs.WhoisList {
+		if _, ok := whoisIdMap[elem.Id]; ok {
+			return fmt.Errorf("duplicated id for whois")
 		}
-		if record.Value == "" {
-			return fmt.Errorf("invalid WhoisRecord: Owner: %s. Error: Missing Value", record.Owner)
+
+		if elem.Creator == "" {
+			return fmt.Errorf("invalid WhoisRecord: Creator: %s. Error: Missing Creator", elem.Creator)
 		}
-		if record.Price == nil {
-			return fmt.Errorf("invalid WhoisRecord: Value: %s. Error: Missing Price", record.Value)
+		if elem.Value == "" {
+			return fmt.Errorf("invalid WhoisRecord: Value: %s. Error: Missing Value", elem.Value)
 		}
+		if elem.Price == "" {
+			return fmt.Errorf("invalid WhoisRecord: Price: %s. Error: Missing Price", elem.Price)
+		}
+
+		whoisIdMap[elem.Id] = true
 	}
-	return data.Params.Validate()
+
+	return gs.Params.Validate()
 }

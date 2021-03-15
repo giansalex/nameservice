@@ -2,32 +2,34 @@ package nameservice
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/giansalex/nameservice/x/nameservice/keeper"
+	"github.com/giansalex/nameservice/x/nameservice/types"
 )
 
-// InitGenesis initialize default parameters
-// and the keeper's address to pubkey map
-func InitGenesis(ctx sdk.Context, keeper Keeper, data GenesisState) {
-	keeper.SetParams(ctx, data.Params)
-	for _, record := range data.WhoisRecords {
-		keeper.SetWhois(ctx, record.Value, record)
+// InitGenesis initializes the capability module's state from a provided genesis
+// state.
+func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) {
+	k.SetParams(ctx, genState.Params)
+	// this line is used by starport scaffolding # genesis/module/init
+	// Set all the whois
+	for _, elem := range genState.WhoisList {
+		k.SetWhois(ctx, *elem)
 	}
 }
 
-// ExportGenesis writes the current store values
-// to a genesis file, which can be imported again
-// with InitGenesis
-func ExportGenesis(ctx sdk.Context, k Keeper) GenesisState {
-	var records []Whois
-	iterator := k.GetNamesIterator(ctx)
-	for ; iterator.Valid(); iterator.Next() {
+// ExportGenesis returns the capability module's exported genesis.
+func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
+	genesis := types.DefaultGenesis()
 
-		name := string(iterator.Key())
-		whois := k.GetWhois(ctx, name)
-		records = append(records, whois)
+	// this line is used by starport scaffolding # genesis/module/export
+	// Get all whois
+	whoisList := k.GetAllWhois(ctx)
+	for _, elem := range whoisList {
+		elem := elem
+		genesis.WhoisList = append(genesis.WhoisList, &elem)
+	}
 
-	}
-	return GenesisState{
-		Params:       k.GetParams(ctx),
-		WhoisRecords: records,
-	}
+	genesis.Params = k.GetParams(ctx)
+
+	return genesis
 }

@@ -1,0 +1,37 @@
+accounts:
+  - name: alice
+    coins: ["1000000000uname"]
+  - name: jack
+    coins: ["1000000000uname"]
+validator:
+  name: jack
+  staked: "10000000uname"
+faucet:
+  name: alice 
+  coins: ["5000000uname"]
+build:
+  binary: "nsd"
+genesis:
+  chain_id: "namechain"
+  app_state:
+    nameservice:
+      params:
+        min_price:
+          - amount: "10"
+            denom: "uname"
+    crisis:
+      constant_fee:
+        denom: "uname"
+    gov:
+      deposit_params:
+        min_deposit:
+          - amount: "10000000"
+            denom: "uname"
+      voting_params:
+        voting_period: "1800s"
+    mint:
+      params:
+        mint_denom: "uname"
+    staking:
+      params:
+        bond_denom: "uname"
