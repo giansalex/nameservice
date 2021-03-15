@@ -9,7 +9,10 @@ validator:
 faucet:
   name: alice 
   coins: ["5000000uname"]
+build:
+  binary: "nsd"
 genesis:
+  chain_id: "namechain"
   app_state:
     nameservice:
       params:
